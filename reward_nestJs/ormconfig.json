@@ -1,0 +1,19 @@
+[
+  {
+    "type": "mssql",
+    "host": "mssql-46928-0.cloudclusters.net",
+    "port": 19870,
+    "username": "Thien123",
+    "password": "123456789Th",
+    "database": "db_struct",
+    "entities": ["dist/**/*.entity{ .ts,.js}"],
+    "migrations": ["dist/migrations/*{.ts,.js}"],
+    "migrationsTableName": "migrations_typeorm",
+    "AutomaticMigrationsEnabled": false,
+    "migrationsRun": true,
+    "extra": {
+      "validateConnection": false,
+      "trustServerCertificate": true
+    }     
+  }
+]

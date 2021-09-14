@@ -1,5 +1,6 @@
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import * as bcrypt from 'bcrypt'
+import { CreateUserDto } from '../dto/create-user.dto';
 
 @Entity()
 export class User extends BaseEntity {
@@ -26,8 +27,16 @@ export class User extends BaseEntity {
     return await bcrypt.compare(password, this.password);
   }
 
-  constructor(){
+  constructor(createUserDTo? :CreateUserDto){
     super();
     this.role = "user"
+    if(createUserDTo){
+      this.name = createUserDTo.name
+      this.username = createUserDTo.username
+      this.password = createUserDTo.password
+      this.email = createUserDTo.email
+      if (createUserDTo.role)
+          this.role = createUserDTo.role
+    }
   }
 }

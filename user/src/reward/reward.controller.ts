@@ -22,6 +22,7 @@ export class RewardController {
         const pattern  = { cmd: "allReward"}
         return await this.client.send(pattern, {})
     }
+
     @Get('posible')
     async getPosibleReward(){
         const pattern  = { cmd: "posibleReward"}
@@ -31,7 +32,7 @@ export class RewardController {
     // 
     @MessagePattern({ cmd: "owner" }, Transport.REDIS)
     async getRewardOwner() {
-        return await this.userService.findAll()
+        return await this.userService.findAll("asdasd")
     }
 
     @MessagePattern({ cmd: "awarder" }, Transport.REDIS)

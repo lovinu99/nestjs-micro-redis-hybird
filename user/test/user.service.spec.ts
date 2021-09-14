@@ -21,6 +21,7 @@ describe('UserServices', () =>{
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      
       imports: [ConfigModule.forRoot()],
       providers: [
         UserService,
@@ -40,6 +41,7 @@ describe('UserServices', () =>{
       const createuser = new CreateUserDto()
       createuser.password="123456"
       const result = await service.create(createuser);
+      console.log(result)
       expect(repository.createUser).toHaveBeenCalled();
       expect(result).toEqual('CreatedAnUser');
     });

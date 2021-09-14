@@ -1,12 +1,13 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { User } from '../entities/user.entity'
 import { InjectRepository } from '@nestjs/typeorm';
-import { Connection, In, Repository } from 'typeorm';
+import { Connection, EntityManager, getManager, In, Repository, Transaction, TransactionManager } from 'typeorm';
 import { CreateUserDto } from '../dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
 import { UpdateUserDTO } from '../dto/update-user.dto';
 import { response } from 'express';
 import { UserRepository } from '../repository/user.repository';
+import { async } from 'rxjs';
 
 @Injectable()
 export class UserService {
@@ -15,15 +16,19 @@ export class UserService {
         private repository: UserRepository
     ) { }
 
+
     async create(user: CreateUserDto): Promise<User> {
         const hashPassword = bcrypt.hashSync(user.password, parseInt(process.env.SALTROUNDS))
         user.password = hashPassword
-
         return await this.repository.createUser(user)
     }
 
-    async findAll(): Promise<User[]> {
+    async findAll(name: string): Promise<User[]> {
         return await this.repository.find();
+    }
+
+    async findWithFilter(query: any): Promise<User[]> {
+        return await this.repository.findUserWithFilter(query)
     }
 
     async findOneByID(id: number): Promise<User> {
@@ -45,30 +50,11 @@ export class UserService {
 
 
     async update(updateData: UpdateUserDTO, userId: number): Promise<any> {
-        try {
-            await this.repository.update(userId, {
-                name: updateData.name,
-                email: updateData.email
-            })
-            return {
-                status: 200,
-                message: "Updated"
-            }
-        } catch (error) {
-            throw new HttpException("Update failed", 401)
-        }
+        return await this.repository.updateUser(updateData, userId)
     }
 
     async delete(userId: number): Promise<any> {
-        try {
-            await this.repository.delete(userId)
-            return {
-                status: 200,
-                message: "Deleted"
-            }
-        } catch (error) {
-            throw new HttpException("Delete failed", 401)
-        }
+        return await this.repository.deleteUser(userId)
     }
 
 }

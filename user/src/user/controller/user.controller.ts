@@ -1,10 +1,11 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, Request, UseGuards } from '@nestjs/common';
 import { UserService } from '../services/user.service';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
 import { Roles } from 'src/auth/decorator/roles.decorator';
 import { RolesGuard } from 'src/auth/guard/roles.guard';
 import { UpdateUserDTO } from '../dto/update-user.dto';
+import { query } from 'express';
 
 @Controller('api/user')
 export class UserController {
@@ -13,8 +14,13 @@ export class UserController {
     @Get()
     @Roles('admin')
     @UseGuards(JwtAuthGuard, RolesGuard)
-    async getAllUser() {
-        return await this.userService.findAll()
+    async getAllUser(@Param() name: any) {
+        return await this.userService.findAll(name)
+    }
+
+    @Get('find')
+    async findWithFilter(@Query() query){
+        return await this.userService.findWithFilter(query)
     }
 
     @Get(':id')

@@ -20,13 +20,11 @@ export class UserController {
     @Get('owner')
     async getOwn() {
         const pattern = { cmd: "owner" }
-        console.log("enterd")
         return await this.client.send<number>(pattern, 1)
     }
     @Get('awarder')
     async getAllReward() {
         const pattern = { cmd: "awarder" }
-        console.log("enterd")
         return await this.client.send<number[]>(pattern, [1,2,3])
     }
 
